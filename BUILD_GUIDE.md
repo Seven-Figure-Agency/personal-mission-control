@@ -19,13 +19,54 @@ The system is opinionated about workflow (the statuses, tiers, and weekly rhythm
 
 ---
 
+## Prerequisites
+
+Before starting setup, ensure the following are installed. If any are missing, the AI assistant should help the user install them.
+
+### Required
+
+| Dependency | Why | How to Install |
+|-----------|-----|----------------|
+| **Node.js 18+** | Runs the dashboard app | [nodejs.org](https://nodejs.org) — download the LTS version. Or use a version manager: `brew install node` (macOS), `nvm install 18` (any platform) |
+| **npm** | Installs packages | Comes bundled with Node.js |
+| **C++ build tools** | `better-sqlite3` compiles a native SQLite binding during `npm install` | **macOS:** `xcode-select --install` (installs Command Line Tools). **Linux:** `sudo apt install build-essential python3` (Debian/Ubuntu) or `sudo yum groupinstall "Development Tools"` (RHEL/CentOS). **Windows:** Install [Visual Studio Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/) with "Desktop development with C++" workload |
+
+### Optional
+
+| Dependency | Why | How to Install |
+|-----------|-----|----------------|
+| **Python 3** | For the `mc.py` CLI (terminal-based task management) | Most macOS/Linux systems have it. Windows: [python.org](https://python.org) |
+| **Git** | To clone the repo | [git-scm.com](https://git-scm.com) |
+
+### What You DON'T Need to Install
+
+- **SQLite** — bundled inside the `better-sqlite3` npm package. No separate install needed. The database file is created automatically on first run.
+- **Any cloud accounts** — everything runs locally. No sign-ups, no API keys required for the core app.
+
+### Quick Check
+
+The AI assistant should verify prerequisites by asking the user to run:
+```bash
+node --version    # Should show v18 or higher
+npm --version     # Should show 8+
+python3 --version # Optional, for CLI
+```
+
+If `node` isn't found, help them install it before proceeding.
+
+---
+
 ## For AI Assistants
 
-If a user has shared this repo and asked you to help them set it up, follow these steps:
+If a user has shared this repo and asked you to help them set it up, follow these steps. The goal is to make this feel personal — you're building THEIR system, not installing generic software.
+
+### Step 0: Verify Prerequisites
+
+Before anything else, check that the user has the required tools installed (see Prerequisites section above). Run the quick check commands. If anything is missing, help them install it before proceeding.
 
 ### Step 1: Setup Interview
 
-Ask the user these questions to build their `config.json`. Explain each concept briefly as you go.
+This is the most important step. Ask these questions conversationally — don't dump them all at once. Explain each concept as you go, and tailor your examples to the user's role. A startup founder gets different suggestions than an engineering manager or a freelancer.
 
 **1. "What's your name?"**
 - This becomes the `owner` field — you'll be the default owner for rocks and the implied assignee when no person is specified.
@@ -185,6 +226,61 @@ At the start of each session, run `python3 mc.py status` to check:
 - Monday: Set Top 3 for the week
 - Friday: Close out completed work
 ```
+
+### Step 9: Connect Meeting Notes (Optional)
+
+Mission Control has a full meetings system — but meetings need to get into the system somehow. There are two approaches:
+
+**Manual entry:** Create meetings directly in the dashboard (Meetings page → New Meeting). Good for logging key meetings after the fact.
+
+**Automated ingestion:** If the user has a meeting note-taker with an API, you can build a sync script that pulls recordings/transcripts and creates meeting records in SQLite. This is an advanced step.
+
+**Meeting note-takers with APIs:**
+- [Fathom](https://fathom.video) — REST API for recordings and transcripts
+- [Fireflies.ai](https://fireflies.ai) — API for meeting transcripts and action items
+- [Otter.ai](https://otter.ai) — API access on business plans
+- [Grain](https://grain.com) — API for highlights and recordings
+- [Read.ai](https://read.ai) — API for meeting summaries
+
+**How to build a meeting sync (for the AI assistant):**
+
+1. Ask the user: "Do you use a meeting note-taker? Which one?"
+2. If yes, check if it has an API and help them get an API key
+3. Create a sync script (Python is easiest) that:
+   - Polls the meeting service API for new recordings
+   - Extracts: title, date, attendees, duration, summary, key topics
+   - Inserts into the `meetings` table via SQLite (use `mc.py query` or direct SQLite)
+   - Optionally extracts action items → creates tasks linked to the meeting
+4. Schedule it to run automatically:
+   - **macOS:** `launchd` plist (runs on a schedule even without a terminal open)
+   - **Linux:** `cron` job (`crontab -e`)
+   - **Any platform:** GitHub Actions on a schedule (requires the database to be accessible)
+
+**Example sync script skeleton** (Python):
+```python
+import sqlite3
+import requests
+import os
+
+DB_PATH = os.path.join(os.path.dirname(__file__), "db", "mission-control.db")
+API_KEY = os.environ.get("MEETING_API_KEY")  # Store in .env, not in code
+
+def sync_meetings():
+    # 1. Fetch new meetings from your note-taker's API
+    # 2. For each new meeting:
+    db = sqlite3.connect(DB_PATH)
+    db.execute("""
+        INSERT INTO meetings (meeting_title, date, meeting_type, attendees, duration, summary, status, organization)
+        VALUES (?, ?, ?, ?, ?, ?, 'Unprocessed', ?)
+    """, (title, date, meeting_type, attendees, duration, summary, organization))
+    db.commit()
+    db.close()
+
+if __name__ == "__main__":
+    sync_meetings()
+```
+
+Store the API key in a `.env` file (already gitignored) or as an environment variable — never hardcode it.
 
 ---
 

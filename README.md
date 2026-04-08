@@ -100,9 +100,15 @@ See [BUILD_GUIDE.md](BUILD_GUIDE.md) for platform-specific notes and troubleshoo
 
 ## Prerequisites
 
-- Node.js 18+
-- npm
-- Python 3 (for the CLI — optional)
+- **Node.js 18+** and **npm** — [nodejs.org](https://nodejs.org) (LTS version)
+- **C++ build tools** — needed to compile the SQLite native binding
+  - macOS: `xcode-select --install`
+  - Linux: `sudo apt install build-essential python3`
+  - Windows: [Visual Studio Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/) with C++ workload
+- **Python 3** (optional, for the `mc.py` CLI)
+- **SQLite** is bundled — no separate install needed
+
+See [BUILD_GUIDE.md](BUILD_GUIDE.md) for detailed setup instructions including platform-specific guidance.
 
 ## License
 
