@@ -1,0 +1,15 @@
+{
+  "name": "Mission Control",
+  "owner": "Your Name",
+  "organizations": ["My Company", "Personal"],
+  "defaultOrganization": "My Company",
+  "categories": ["Engineering", "Marketing", "Operations", "Sales"],
+  "people": ["Your Name"],
+  "energyTypes": [
+    { "name": "Deep Work", "color": "blue" },
+    { "name": "Reactive", "color": "red" },
+    { "name": "Creative", "color": "emerald" }
+  ],
+  "meetingTypes": ["Standup", "1:1", "Strategy", "All-Hands", "Client"],
+  "quarters": ["Q2 2026", "Q3 2026", "Q4 2026", "Q1 2027"]
+}
