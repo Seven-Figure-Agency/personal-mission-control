@@ -21,7 +21,17 @@ The system is opinionated about workflow (the statuses, tiers, and weekly rhythm
 
 ## Prerequisites
 
-Before starting setup, ensure the following are installed. If any are missing, the AI assistant should help the user install them.
+A setup script is included that checks everything automatically. If the user is comfortable with the terminal, they can run:
+
+```bash
+bash setup.sh
+```
+
+This checks for Node.js, npm, C++ build tools, and Python — installs what's missing (with permission), and gets the app ready to run.
+
+If the user is NOT comfortable with the terminal, the AI assistant should walk them through each step below. On macOS, the Terminal app is in Applications → Utilities → Terminal.
+
+### Required
 
 ### Required
 
@@ -59,6 +69,15 @@ If `node` isn't found, help them install it before proceeding.
 ## For AI Assistants
 
 If a user has shared this repo and asked you to help them set it up, follow these steps. The goal is to make this feel personal — you're building THEIR system, not installing generic software.
+
+**Important: Gauge the user's technical comfort level first.** Ask: "Have you used a terminal/command line before?" If the answer is no or uncertain:
+- Explain that a terminal is just a text-based way to run programs on their computer
+- On Mac: tell them to open **Terminal** (search for it in Spotlight with Cmd+Space, type "Terminal")
+- Give them one command at a time, explain what it does before they run it, and confirm it worked before moving on
+- Never dump multiple commands at once
+- If you (the AI) have the ability to run commands directly (like in Claude Code), offer to do it for them
+
+**If you can run commands:** The fastest path is `bash setup.sh` — it handles prerequisites, dependencies, and tells you what's missing. Then proceed to the interview.
 
 ### Step 0: Verify Prerequisites
 
@@ -240,7 +259,8 @@ Mission Control has a full meetings system — but meetings need to get into the
 - [Fireflies.ai](https://fireflies.ai) — API for meeting transcripts and action items
 - [Otter.ai](https://otter.ai) — API access on business plans
 - [Grain](https://grain.com) — API for highlights and recordings
-- [Read.ai](https://read.ai) — API for meeting summaries
+
+**Note:** Not all meeting tools have usable APIs. Before committing to a note-taker for this integration, verify their API is actually available and accessible on your plan. Some tools advertise API access but restrict it heavily.
 
 **How to build a meeting sync (for the AI assistant):**
 

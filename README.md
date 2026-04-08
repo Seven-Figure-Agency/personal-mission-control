@@ -23,8 +23,8 @@ Everything runs locally on your machine. Your data never leaves your computer.
 ```bash
 git clone https://github.com/Seven-Figure-Agency/personal-mission-control.git
 cd personal-mission-control
+bash setup.sh                        # Checks prerequisites and installs dependencies
 cp config.example.json config.json   # Edit with your details
-npm install
 npm run dev
 ```
 
