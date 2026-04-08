@@ -11,5 +11,6 @@
     { "name": "Creative", "color": "emerald" }
   ],
   "meetingTypes": ["Standup", "1:1", "Strategy", "All-Hands", "Client"],
-  "quarters": ["Q2 2026", "Q3 2026", "Q4 2026", "Q1 2027"]
+  "quarters": ["Q2 2026", "Q3 2026", "Q4 2026", "Q1 2027"],
+  "terminal": false
 }

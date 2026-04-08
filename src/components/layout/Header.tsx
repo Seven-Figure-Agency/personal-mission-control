@@ -1,6 +1,6 @@
 "use client";
 
-import { Rocket, Search, RefreshCw } from "lucide-react";
+import { Rocket, Search, TerminalSquare, RefreshCw } from "lucide-react";
 
 function getContext() {
   const now = new Date();
@@ -13,9 +13,15 @@ function getContext() {
 
 export default function Header({
   onOpenSearch,
+  terminalEnabled,
+  terminalOpen,
+  onToggleTerminal,
   onRefreshData,
 }: {
   onOpenSearch?: () => void;
+  terminalEnabled?: boolean;
+  terminalOpen?: boolean;
+  onToggleTerminal?: () => void;
   onRefreshData?: () => void;
 }) {
   const { weekNum, quarter, today } = getContext();
@@ -54,6 +60,24 @@ export default function Header({
             title="Refresh data"
           >
             <RefreshCw className="w-3.5 h-3.5" />
+          </button>
+        )}
+
+        {/* Terminal toggle — only shown when terminal is enabled in config */}
+        {terminalEnabled && onToggleTerminal && (
+          <button
+            onClick={onToggleTerminal}
+            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-ui border ${
+              terminalOpen
+                ? "bg-mc-accent/15 border-mc-accent/30 text-mc-accent"
+                : "bg-dark-2 border-dark-3/50 text-text-tertiary hover:text-text-muted hover:border-dark-3"
+            }`}
+          >
+            <TerminalSquare className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Terminal</span>
+            <kbd className="text-[10px] bg-dark-3/50 px-1.5 py-0.5 rounded text-text-tertiary">
+              &#8984;J
+            </kbd>
           </button>
         )}
 

@@ -138,7 +138,31 @@ python3 mc.py create "Review Q3 budget" category="Operations" energy_type="Deep 
 
 The CLI reads the database directly — it works even when the web app isn't running. It's particularly useful for AI-assisted workflows where the AI manages tasks on your behalf.
 
-### Step 7: AI Integration (Optional)
+### Step 7: Enable Terminal (Optional)
+
+Mission Control includes an embedded terminal panel (Cmd+J) that opens a shell right inside the dashboard. This is powerful for AI-assisted workflows — your AI can run CLI commands without switching windows.
+
+**Caveats to explain to the user:**
+- Requires `node-pty`, a native Node.js module that compiles C++ code during install
+- On macOS: usually works out of the box if Xcode Command Line Tools are installed (`xcode-select --install`)
+- On Linux: needs `build-essential` and `python3`
+- On Windows: needs Visual Studio Build Tools — this is where it gets tricky
+- If the install fails, it does NOT affect the rest of the app — Mission Control works fine without it
+
+**To enable:**
+
+1. Install the terminal dependencies:
+```bash
+npm install node-pty ws @xterm/xterm @xterm/addon-fit concurrently @types/ws
+```
+
+2. Set `"terminal": true` in `config.json`
+
+3. Use `npm run dev:full` instead of `npm run dev` (this starts both the Next.js app and the terminal WebSocket server)
+
+If `npm install node-pty` fails, skip this step. The user can always use their regular terminal alongside the dashboard.
+
+### Step 8: AI Integration (Optional)
 
 If the user works with an AI assistant regularly (Claude Code, etc.), suggest creating a `CLAUDE.md` or equivalent file that:
 

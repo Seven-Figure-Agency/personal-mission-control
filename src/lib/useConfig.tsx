@@ -12,6 +12,7 @@ export interface ClientConfig {
   energyTypes: { name: string; color: string }[];
   meetingTypes: string[];
   quarters: string[];
+  terminal?: boolean;
 }
 
 const ConfigContext = createContext<ClientConfig | null>(null);

@@ -13,5 +13,6 @@ export function GET() {
     energyTypes: config.energyTypes,
     meetingTypes: config.meetingTypes,
     quarters: config.quarters,
+    terminal: config.terminal || false,
   });
 }

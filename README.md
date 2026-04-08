@@ -15,6 +15,7 @@ Everything runs locally on your machine. Your data never leaves your computer.
 - **Global search** (Cmd+K)
 - **Activity log** for change tracking
 - **Python CLI** (`mc.py`) for terminal and AI-assisted management
+- **Embedded terminal** (optional) — shell panel inside the dashboard (Cmd+J)
 - **Fully configurable** — categories, team members, energy types, meeting types, and organizations all defined in a single config file
 
 ## Quick Start
@@ -74,6 +75,20 @@ python3 mc.py projects              # List projects by tier
 python3 mc.py set-tier 3 L1         # Set project tier
 python3 mc.py query "SELECT ..."    # Raw SQL query
 ```
+
+## Embedded Terminal (Optional)
+
+Mission Control can include a built-in terminal panel (toggle with Cmd+J). This requires native dependencies that may not compile on all systems.
+
+To enable:
+
+```bash
+npm install node-pty ws @xterm/xterm @xterm/addon-fit concurrently @types/ws
+```
+
+Then set `"terminal": true` in your `config.json` and use `npm run dev:full` instead of `npm run dev`.
+
+See [BUILD_GUIDE.md](BUILD_GUIDE.md) for platform-specific notes and troubleshooting.
 
 ## Tech Stack
 

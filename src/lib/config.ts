@@ -16,6 +16,7 @@ export interface Config {
   energyTypes: EnergyTypeConfig[];
   meetingTypes: string[];
   quarters: string[];
+  terminal?: boolean;
 }
 
 const CONFIG_PATH = path.join(process.cwd(), "config.json");
